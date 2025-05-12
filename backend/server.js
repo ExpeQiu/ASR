@@ -10,12 +10,21 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
 const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
 const fs = require('fs');
 const winston = require('winston');
 
-// 加载环境变量
-dotenv.config();
+// 加载环境变量 - 确保使用正确的路径
+const dotenv = require('dotenv');
+const envPath = path.resolve(__dirname, '../.env');
+const result = dotenv.config({ path: envPath });
+
+if (result.error) {
+  console.error(`环境变量加载失败: ${result.error.message}`);
+  console.error(`尝试加载的.env文件路径: ${envPath}`);
+} else {
+  console.log(`环境变量已加载，路径: ${envPath}`);
+  console.log(`DASHSCOPE_API_KEY: ${process.env.DASHSCOPE_API_KEY ? '已配置' : '未配置'}`);
+}
 
 // 创建Express应用
 const app = express();

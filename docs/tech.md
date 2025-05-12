@@ -324,6 +324,37 @@ UPLOAD_DIR=./uploads
 2. 不支持前端直接调用API，需通过后端中转
 3. 批处理音频数目：单次请求最多支持100个文件URL
 
+### 阿里云语音识别API参数格式
+
+阿里云语音识别API（SenseVoice）需要严格按照以下格式提交请求：
+
+```javascript
+// 正确的参数格式
+const requestData = {
+  model: "sensevoice-v1", // 使用阿里云录音文件识别模型
+  input: {
+    file_urls: ["https://your-public-url.com/audio.mp3"] // 文件URL数组
+  },
+  parameters: {
+    language_hints: ["zh"] // 语言设置，必须是数组格式
+  }
+};
+
+// 请求头设置
+const headers = {
+  'Content-Type': 'application/json',
+  'Authorization': `Bearer ${apiKey}`,
+  'X-DashScope-Async': 'enable' // 启用异步处理
+};
+```
+
+**注意事项：**
+1. `language_hints` 必须是数组格式，即使只有一种语言
+2. `file_urls` 也必须是数组格式，可包含多个文件URL
+3. 异步任务需要设置 `X-DashScope-Async: enable` 请求头
+4. 任务提交后，需要通过任务ID查询结果
+5. 任务完成后，需要通过 `transcription_url` 获取实际转录内容
+
 ### 错误处理
 
 常见错误码及处理方式：
@@ -331,5 +362,8 @@ UPLOAD_DIR=./uploads
 | 错误代码 | 错误信息 | 含义说明 |
 |---------|---------|---------|
 | InvalidFile.DecodeFailed | The audio file cannot be decoded. | 无法解码文件。请检查文件编码是否正确，并确认文件为正确的音频格式。 |
+| InvalidParameter | task can not be null | 任务ID为空。确保正确传递任务ID进行查询。 |
+| InvalidParameter | Model not exist | 模型不存在。确保使用正确的模型名称（sensevoice-v1）。 |
+| Throttling.AllocationQuota | quota exceeded | API配额超限。检查账户配额或降低请求频率。 |
 
 更多错误码请参考[阿里云文档](https://help.aliyun.com/zh/model-studio/developer-reference/sensevoice-recorded-speech-recognition-restful-api)。 
