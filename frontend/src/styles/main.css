@@ -1,0 +1,269 @@
+/* 基础设置 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-size: 14px;
+}
+
+/* 页面头部 */
+.app-header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 1.6em;
+}
+
+/* 主容器 */
+.main-container {
+    display: flex;
+    flex-grow: 1;
+    padding: 15px;
+    gap: 15px; /* 列之间的间距 */
+}
+
+/* 通用列样式 */
+.column {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    padding: 20px;
+    overflow-y: auto; /* 内容溢出时添加滚动条 */
+}
+
+.left-column {
+    flex: 0 0 25%; /* 左列的固定宽度 */
+    max-width: 300px;
+}
+
+.middle-column {
+    flex: 1; /* 中间列占据剩余空间 */
+}
+
+.right-column {
+    flex: 0 0 35%; /* 右列的固定宽度 */
+    max-width: 450px;
+}
+
+h2 {
+    font-size: 1.3em;
+    color: #0056b3;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 8px;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+/* 左列：文件上传区域 */
+.file-input-area {
+    border: 2px dashed #007bff;
+    padding: 30px 15px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
+    margin-bottom: 15px;
+}
+
+.file-input-area:hover {
+    background-color: #e9ecef;
+}
+
+.file-input-area input[type="file"] {
+    display: none;
+}
+
+.file-input-label {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.info-text {
+    font-size: 0.85em;
+    color: #6c757d;
+    margin-top: 8px;
+}
+
+#startAllButton {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1em;
+}
+
+/* 中间列：文件列表 */
+.file-list-container {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.file-item {
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.file-item.active, .file-item:hover {
+    background-color: #e9ecef;
+    border-color: #007bff;
+}
+
+.file-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.file-name {
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70%;
+}
+
+.file-size, .file-status {
+    font-size: 0.85em;
+    color: #6c757d;
+}
+
+.file-status.completed { color: #28a745; }
+.file-status.error { color: #dc3545; }
+.file-status.processing { color: #007bff; }
+
+.progress-bar-container {
+    width: 100%;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    height: 10px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background-color: #007bff;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.file-item.completed .progress-bar { background-color: #28a745; }
+.file-item.error .progress-bar { background-color: #dc3545; width: 100% !important; }
+
+/* 右列：输出区域 */
+#transcriptionFileName {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #495057;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    font-size: 0.95em;
+}
+
+select, button {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    font-size: 0.95em;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+select {
+    width: 100%;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+    border-color: #007bff;
+}
+
+button:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+button:disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    border-color: #ced4da;
+    cursor: not-allowed;
+}
+
+#transcriptionOutput {
+    width: calc(100% - 22px);
+    height: 250px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    font-size: 0.95em;
+    line-height: 1.5;
+    resize: vertical;
+    margin-bottom: 15px;
+}
+
+.output-actions button {
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+.status-global {
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.status-global.error { 
+    background-color: #f8d7da; 
+    color: #721c24; 
+    border: 1px solid #f5c6cb;
+}
+
+.status-global.success { 
+    background-color: #d4edda; 
+    color: #155724; 
+    border: 1px solid #c3e6cb;
+}
+
+/* 页面底部 */
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #343a40;
+    color: #f8f9fa;
+    font-size: 0.9em;
+}
+
+/* 实用工具 */
+.hidden { 
+    display: none !important; 
+} 

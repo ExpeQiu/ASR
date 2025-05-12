@@ -1,0 +1,137 @@
+[32minfo[39m: 服务器已启动，监听端口: 8000 {"timestamp":"2025-05-12T04:38:29.751Z"}
+[32minfo[39m: API基础URL: http://localhost:8000/api/v1 {"timestamp":"2025-05-12T04:38:29.757Z"}
+[32minfo[39m: 健康检查: http://localhost:8000/health {"timestamp":"2025-05-12T04:38:29.757Z"}
+2025-05-12 12:38:53 [32minfo[39m: API请求: 上传文件 {
+  "service": "aisound-backend",
+  "method": "POST",
+  "url": "/api/v1/files",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+  "filename": "æ°åè¡è¶å­è·¯11å·ä¹148éº.m4a",
+  "size": 37591
+}
+[32minfo[39m: ::1 - - [12/May/2025:04:38:53 +0000] "POST /api/v1/files HTTP/1.1" 201 273 "http://localhost:53409/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" {"timestamp":"2025-05-12T04:38:53.511Z"}
+[32minfo[39m: ::1 - - [12/May/2025:04:38:53 +0000] "POST /api/v1/transcriptions HTTP/1.1" 404 114 "http://localhost:53409/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" {"timestamp":"2025-05-12T04:38:53.534Z"}
+[32minfo[39m: ::1 - - [12/May/2025:04:39:10 +0000] "GET / HTTP/1.1" 404 114 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" {"timestamp":"2025-05-12T04:39:10.726Z"}
+[32minfo[39m: ::1 - - [12/May/2025:04:39:11 +0000] "GET /favicon.ico HTTP/1.1" 404 114 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" {"timestamp":"2025-05-12T04:39:11.529Z"}
+2025-05-12 12:40:35 [32minfo[39m: API请求: 上传文件 {
+  "service": "aisound-backend",
+  "method": "POST",
+  "url": "/api/v1/files",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+  "filename": "æ°åè¡è¶å­è·¯11å·ä¹148éº.m4a",
+  "size": 37591
+}
+[32minfo[39m: ::1 - - [12/May/2025:04:40:35 +0000] "POST /api/v1/files HTTP/1.1" 201 273 "http://localhost:53852/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" {"timestamp":"2025-05-12T04:40:35.198Z"}
+2025-05-12 12:40:35 [32minfo[39m: API请求: 转录文件 {
+  "service": "aisound-backend",
+  "method": "POST",
+  "url": "/api/v1/transcriptions/acbdea70-be6b-4066-9676-375841ccce7b",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+  "fileId": "acbdea70-be6b-4066-9676-375841ccce7b",
+  "options": {}
+}
+2025-05-12 12:40:35 [32minfo[39m: 开始转录文件: acbdea70-be6b-4066-9676-375841ccce7b {
+  "service": "aisound-backend",
+  "originalName": "æ°åè¡è¶å­è·¯11å·ä¹148éº.m4a"
+}
+2025-05-12 12:40:35 [33mwarn[39m: 未配置阿里云语音识别API密钥，使用模拟转录 {
+  "service": "aisound-backend"
+}
+[32minfo[39m: ::1 - - [12/May/2025:04:40:35 +0000] "POST /api/v1/transcriptions/acbdea70-be6b-4066-9676-375841ccce7b HTTP/1.1" 202 170 "http://localhost:53852/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" {"timestamp":"2025-05-12T04:40:35.212Z"}
+2025-05-12 12:40:35 [32minfo[39m: API请求: 获取转录状态 {
+  "service": "aisound-backend",
+  "method": "GET",
+  "url": "/api/v1/transcriptions/acbdea70-be6b-4066-9676-375841ccce7b/status",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+  "fileId": "acbdea70-be6b-4066-9676-375841ccce7b"
+}
+[32minfo[39m: ::1 - - [12/May/2025:04:40:35 +0000] "GET /api/v1/transcriptions/acbdea70-be6b-4066-9676-375841ccce7b/status HTTP/1.1" 200 196 "http://localhost:53852/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" {"timestamp":"2025-05-12T04:40:35.217Z"}
+2025-05-12 12:40:36 [32minfo[39m: 模拟转录成功: acbdea70-be6b-4066-9676-375841ccce7b {
+  "service": "aisound-backend"
+}
+2025-05-12 12:40:36 [32minfo[39m: 文件转录完成: acbdea70-be6b-4066-9676-375841ccce7b {
+  "service": "aisound-backend"
+}
+2025-05-12 12:40:37 [32minfo[39m: API请求: 获取转录状态 {
+  "service": "aisound-backend",
+  "method": "GET",
+  "url": "/api/v1/transcriptions/acbdea70-be6b-4066-9676-375841ccce7b/status",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+  "fileId": "acbdea70-be6b-4066-9676-375841ccce7b"
+}
+[32minfo[39m: ::1 - - [12/May/2025:04:40:37 +0000] "GET /api/v1/transcriptions/acbdea70-be6b-4066-9676-375841ccce7b/status HTTP/1.1" 200 236 "http://localhost:53852/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" {"timestamp":"2025-05-12T04:40:37.227Z"}
+2025-05-12 12:40:37 [32minfo[39m: API请求: 获取转录结果 {
+  "service": "aisound-backend",
+  "method": "GET",
+  "url": "/api/v1/transcriptions/acbdea70-be6b-4066-9676-375841ccce7b/result",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+  "fileId": "acbdea70-be6b-4066-9676-375841ccce7b"
+}
+[32minfo[39m: ::1 - - [12/May/2025:04:40:37 +0000] "GET /api/v1/transcriptions/acbdea70-be6b-4066-9676-375841ccce7b/result HTTP/1.1" 200 419 "http://localhost:53852/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" {"timestamp":"2025-05-12T04:40:37.233Z"}
+[32minfo[39m: ::1 - - [12/May/2025:04:42:11 +0000] "GET / HTTP/1.1" 404 114 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" {"timestamp":"2025-05-12T04:42:11.482Z"}
+2025-05-12 12:44:42 [32minfo[39m: API请求: 上传文件 {
+  "service": "aisound-backend",
+  "method": "POST",
+  "url": "/api/v1/files",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+  "filename": "æ°åè¡è¶å­è·¯11å·ä¹148éº.m4a",
+  "size": 37591
+}
+[32minfo[39m: ::1 - - [12/May/2025:04:44:42 +0000] "POST /api/v1/files HTTP/1.1" 201 273 "http://localhost:53852/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" {"timestamp":"2025-05-12T04:44:42.897Z"}
+2025-05-12 12:44:42 [32minfo[39m: API请求: 转录文件 {
+  "service": "aisound-backend",
+  "method": "POST",
+  "url": "/api/v1/transcriptions/343f3912-9aa4-4151-9e99-68bb85031376",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+  "fileId": "343f3912-9aa4-4151-9e99-68bb85031376",
+  "options": {}
+}
+2025-05-12 12:44:42 [32minfo[39m: 开始转录文件: 343f3912-9aa4-4151-9e99-68bb85031376 {
+  "service": "aisound-backend",
+  "originalName": "æ°åè¡è¶å­è·¯11å·ä¹148éº.m4a"
+}
+2025-05-12 12:44:42 [33mwarn[39m: 未配置阿里云语音识别API密钥，使用模拟转录 {
+  "service": "aisound-backend"
+}
+[32minfo[39m: ::1 - - [12/May/2025:04:44:42 +0000] "POST /api/v1/transcriptions/343f3912-9aa4-4151-9e99-68bb85031376 HTTP/1.1" 202 170 "http://localhost:53852/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" {"timestamp":"2025-05-12T04:44:42.909Z"}
+2025-05-12 12:44:42 [32minfo[39m: API请求: 获取转录状态 {
+  "service": "aisound-backend",
+  "method": "GET",
+  "url": "/api/v1/transcriptions/343f3912-9aa4-4151-9e99-68bb85031376/status",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+  "fileId": "343f3912-9aa4-4151-9e99-68bb85031376"
+}
+[32minfo[39m: ::1 - - [12/May/2025:04:44:42 +0000] "GET /api/v1/transcriptions/343f3912-9aa4-4151-9e99-68bb85031376/status HTTP/1.1" 200 196 "http://localhost:53852/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" {"timestamp":"2025-05-12T04:44:42.913Z"}
+2025-05-12 12:44:43 [32minfo[39m: 模拟转录成功: 343f3912-9aa4-4151-9e99-68bb85031376 {
+  "service": "aisound-backend"
+}
+2025-05-12 12:44:43 [32minfo[39m: 文件转录完成: 343f3912-9aa4-4151-9e99-68bb85031376 {
+  "service": "aisound-backend"
+}
+2025-05-12 12:44:44 [32minfo[39m: API请求: 获取转录状态 {
+  "service": "aisound-backend",
+  "method": "GET",
+  "url": "/api/v1/transcriptions/343f3912-9aa4-4151-9e99-68bb85031376/status",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+  "fileId": "343f3912-9aa4-4151-9e99-68bb85031376"
+}
+[32minfo[39m: ::1 - - [12/May/2025:04:44:44 +0000] "GET /api/v1/transcriptions/343f3912-9aa4-4151-9e99-68bb85031376/status HTTP/1.1" 200 236 "http://localhost:53852/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" {"timestamp":"2025-05-12T04:44:44.924Z"}
+2025-05-12 12:44:44 [32minfo[39m: API请求: 获取转录结果 {
+  "service": "aisound-backend",
+  "method": "GET",
+  "url": "/api/v1/transcriptions/343f3912-9aa4-4151-9e99-68bb85031376/result",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+  "fileId": "343f3912-9aa4-4151-9e99-68bb85031376"
+}
+[32minfo[39m: ::1 - - [12/May/2025:04:44:44 +0000] "GET /api/v1/transcriptions/343f3912-9aa4-4151-9e99-68bb85031376/result HTTP/1.1" 200 419 "http://localhost:53852/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" {"timestamp":"2025-05-12T04:44:44.930Z"}

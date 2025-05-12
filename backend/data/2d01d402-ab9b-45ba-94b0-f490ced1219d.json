@@ -1,0 +1,12 @@
+{
+  "fileId": "2d01d402-ab9b-45ba-94b0-f490ced1219d",
+  "originalName": "test_audio.mp3",
+  "filename": "2d01d402-ab9b-45ba-94b0-f490ced1219d.mp3",
+  "path": "/Users/qiubin/Documents/GitHub/03on/AIsound/backend/uploads/2d01d402-ab9b-45ba-94b0-f490ced1219d.mp3",
+  "size": 26,
+  "mimeType": "audio/mpeg",
+  "status": "error",
+  "createdAt": "2025-05-12T03:10:34.804Z",
+  "updatedAt": "2025-05-12T03:10:34.842Z",
+  "error": "转录API错误: Model not exist."
+}

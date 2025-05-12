@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' ws://localhost:* http://localhost:*; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline';">
+    <title>高级语音转文字工具</title>
+    <link rel="stylesheet" href="./styles/main.css">
+</head>
+<body>
+    <header class="app-header">
+        <h1>高级语音转文字工具</h1>
+    </header>
+
+    <div class="main-container">
+        <aside class="column left-column">
+            <h2>上传文件</h2>
+            <div class="file-input-area" id="dropArea">
+                <input type="file" id="audioFilesInput" accept=".mp3, .wav, .m4a, .flac" multiple>
+                <span class="file-input-label">点击选择 或 拖拽文件到此区域</span>
+                <p class="info-text">支持 MP3, WAV, M4A, FLAC. 单个文件最大50MB.</p>
+            </div>
+            <button id="startAllButton" disabled>开始全部转录</button>
+            <div id="globalStatusMessage" class="status-global hidden"></div>
+        </aside>
+
+        <main class="column middle-column">
+            <h2>文件列表</h2>
+            <ul class="file-list-container" id="fileList">
+                <!-- 文件将通过JS动态添加 -->
+            </ul>
+        </main>
+
+        <aside class="column right-column">
+            <h2>转录结果</h2>
+            <div id="transcriptionFileName"></div>
+            <div class="output-options">
+                <label for="templateSelect">输出模板:</label>
+                <select id="templateSelect">
+                    <option value="default">默认模板</option>
+                    <option value="timestamp">带时间戳</option>
+                    <option value="speaker">带说话人</option>
+                </select>
+            </div>
+            <textarea id="transcriptionOutput" readonly></textarea>
+            <div class="output-actions">
+                <button id="copyButton" disabled>复制文本</button>
+                <button id="downloadButton" disabled>下载为TXT</button>
+            </div>
+        </aside>
+    </div>
+
+    <footer>
+        <p>© 2025 语音转文字工具 | 基于阿里云语音识别API</p>
+    </footer>
+
+    <script src="./index.js"></script>
+</body>
+</html>

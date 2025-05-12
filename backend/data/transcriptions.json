@@ -1,0 +1,52 @@
+[
+  {
+    "id": "e3ed3703-b4fe-4bc6-94cf-fd309e1ff56f",
+    "fileName": "sample_audio_1.mp3",
+    "fileSize": 1024000,
+    "duration": 65,
+    "status": "completed",
+    "createdAt": "2025-05-12T04:38:28.938Z",
+    "updatedAt": "2025-05-12T04:38:28.939Z",
+    "result": {
+      "text": "这是一个示例转录文本，用于测试应用功能。语音转文字工具可以帮助用户快速将音频内容转换为文本。",
+      "language": "zh-CN",
+      "segments": [
+        {
+          "text": "这是一个示例转录文本，用于测试应用功能。",
+          "startTime": 0,
+          "endTime": 3.2
+        },
+        {
+          "text": "语音转文字工具可以帮助用户快速将音频内容转换为文本。",
+          "startTime": 3.5,
+          "endTime": 7.8
+        }
+      ]
+    }
+  },
+  {
+    "id": "8142bb15-b79e-4652-9382-4b3dae0c8eac",
+    "fileName": "sample_audio_2.wav",
+    "fileSize": 2048000,
+    "duration": 120,
+    "status": "completed",
+    "createdAt": "2025-05-11T04:38:28.939Z",
+    "updatedAt": "2025-05-11T04:38:28.939Z",
+    "result": {
+      "text": "This is a sample transcription text for testing application features. The voice-to-text tool can help users quickly convert audio content to text.",
+      "language": "en-US",
+      "segments": [
+        {
+          "text": "This is a sample transcription text for testing application features.",
+          "startTime": 0,
+          "endTime": 4.5
+        },
+        {
+          "text": "The voice-to-text tool can help users quickly convert audio content to text.",
+          "startTime": 4.8,
+          "endTime": 9.2
+        }
+      ]
+    }
+  }
+]

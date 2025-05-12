@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  # 后端服务
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: aisound-backend
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - ../backend:/app
+      - /app/node_modules
+      - ../uploads:/app/uploads
+      - ../logs:/app/logs
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY}
+      - BACKEND_PORT=8000
+      - FRONTEND_PORT=${FRONTEND_PORT:-3000}
+    networks:
+      - aisound-network
+
+  # 前端服务
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: aisound-frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+      - ../logs:/app/logs
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - API_BASE_URL=http://backend:8000/api
+    depends_on:
+      - backend
+    networks:
+      - aisound-network
+
+networks:
+  aisound-network:
+    driver: bridge 

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高级语音转文字工具</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-size: 14px;
+        }
+        .app-header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .app-header h1 {
+            margin: 0;
+            font-size: 1.6em;
+        }
+        .main-container {
+            display: flex;
+            flex-grow: 1;
+            padding: 15px;
+            gap: 15px; /* Space between columns */
+        }
+        .column {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            padding: 20px;
+            overflow-y: auto; /* Add scroll for column content if it overflows */
+        }
+        .left-column {
+            flex: 0 0 25%; /* Fixed width for left column */
+            max-width: 300px;
+        }
+        .middle-column {
+            flex: 1; /* Middle column takes remaining space */
+        }
+        .right-column {
+            flex: 0 0 35%; /* Fixed width for right column */
+            max-width: 450px;
+        }
+
+        h2 {
+            font-size: 1.3em;
+            color: #0056b3;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        /* Left Column: Upload */
+        .file-input-area {
+            border: 2px dashed #007bff;
+            padding: 30px 15px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #f8f9fa;
+            transition: background-color 0.3s ease;
+            margin-bottom: 15px;
+        }
+        .file-input-area:hover {
+            background-color: #e9ecef;
+        }
+        .file-input-area input[type="file"] {
+            display: none;
+        }
+        .file-input-label {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .info-text {
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-top: 8px;
+        }
+        #startAllButton {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1em;
+        }
+
+        /* Middle Column: File List */
+        .file-list-container {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .file-item {
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .file-item.active, .file-item:hover {
+            background-color: #e9ecef;
+            border-color: #007bff;
+        }
+        .file-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .file-name {
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+        .file-size, .file-status {
+            font-size: 0.85em;
+            color: #6c757d;
+        }
+        .file-status.completed { color: #28a745; }
+        .file-status.error { color: #dc3545; }
+        .file-status.processing { color: #007bff; }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            height: 10px; /* Slimmer progress bar */
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #007bff;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        .file-item.completed .progress-bar { background-color: #28a745; }
+        .file-item.error .progress-bar { background-color: #dc3545; width: 100% !important; }
+
+
+        /* Right Column: Output */
+        #transcriptionFileName {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+        select, button {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            font-size: 0.95em;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        select {
+            width: 100%;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s ease;
+            border-color: #007bff;
+        }
+        button:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #e9ecef;
+            color: #6c757d;
+            border-color: #ced4da;
+            cursor: not-allowed;
+        }
+        #transcriptionOutput {
+            width: calc(100% - 22px); /* Adjust for padding and border */
+            height: 250px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            font-size: 0.95em;
+            line-height: 1.5;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+        .output-actions button {
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        .status-global {
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        .status-global.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;}
+        .status-global.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;}
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #343a40;
+            color: #f8f9fa;
+            font-size: 0.9em;
+        }
+
+        /* Utility */
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <h1>高级语音转文字工具</h1>
+    </header>
+
+    <div class="main-container">
+        <aside class="column left-column">
+            <h2>上传文件</h2>
+            <div class="file-input-area" id="dropArea" onclick="document.getElementById('audioFilesInput').click();">
+                <input type="file" id="audioFilesInput" accept=".mp3, .wav, .m4a, .flac" multiple onchange="handleFilesSelected(this.files)">
+                <span class="file-input-label">点击选择 或 拖拽文件到此区域</span>
+                <p class="info-text">支持 MP3, WAV, M4A, FLAC. 单个文件最大50MB.</p>
+            </div>
+            <button id="startAllButton" onclick="startAllTranscriptions()" disabled>开始全部转录</button>
+            <div id="globalStatusMessage" class="status-global hidden"></div>
+        </aside>
+
+        <main class="column middle-column">
+            <h2>文件列表与进度</h2>
+            <div id="fileListContainer">
+                <p class="info-text" id="emptyFileListMessage">暂无文件。请从左侧上传。</p>
+                </div>
+        </main>
+
+        <aside class="column right-column">
+            <h2>转录结果</h2>
+            <div id="transcriptionFileName">未选择文件</div>
+            <div>
+                <label for="outputTemplate">输出模板:</label>
+                <select id="outputTemplate">
+                    <option value="default">默认模板 (纯文本)</option>
+                    <option value="timestamped">带时间戳模板</option>
+                    <option value="speaker_dialogue">说话人对话模板</option>
+                </select>
+            </div>
+            <textarea id="transcriptionOutput" readonly placeholder="选择一个已完成的文件查看转录文本..."></textarea>
+            <div class="output-actions">
+                <button id="copyButton" onclick="copyToClipboard()" disabled>复制文本</button>
+                <button id="downloadTxtButton" onclick="downloadText('txt')" disabled>下载 .txt</button>
+                <button id="downloadDocxButton" onclick="downloadText('docx')" disabled>下载 .docx</button>
+                <button id="downloadPdfButton" onclick="downloadText('pdf')" disabled>下载 .pdf</button>
+            </div>
+        </aside>
+    </div>
+
+    <footer class="app-footer">
+        <p>&copy; 2025 高级语音转文字工具. 技术支持.</p>
+    </footer>
+
+    <script>
+        let filesToProcess = [];
+        let selectedFileId = null;
+        let fileIdCounter = 0;
+        const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+
+        const dropArea = document.getElementById('dropArea');
+        const fileListContainer = document.getElementById('fileListContainer');
+        const startAllButton = document.getElementById('startAllButton');
+        const transcriptionOutput = document.getElementById('transcriptionOutput');
+        const transcriptionFileNameDisplay = document.getElementById('transcriptionFileName');
+        const copyButton = document.getElementById('copyButton');
+        const downloadTxtButton = document.getElementById('downloadTxtButton');
+        const downloadDocxButton = document.getElementById('downloadDocxButton');
+        const downloadPdfButton = document.getElementById('downloadPdfButton');
+        const outputTemplateSelect = document.getElementById('outputTemplate');
+        const emptyFileListMessage = document.getElementById('emptyFileListMessage');
+        const globalStatusMessage = document.getElementById('globalStatusMessage');
+
+
+        // Drag and Drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.style.backgroundColor = '#e9ecef', false);
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.style.backgroundColor = '#f8f9fa', false);
+        });
+        dropArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+            handleFilesSelected(files);
+        }
+
+        function handleFilesSelected(selectedFiles) {
+            emptyFileListMessage.classList.add('hidden');
+            let validFilesAdded = false;
+            Array.from(selectedFiles).forEach(file => {
+                if (file.size > MAX_FILE_SIZE) {
+                    showGlobalStatus(`文件 "${file.name}" 过大 (最大 ${MAX_FILE_SIZE / 1024 / 1024}MB).`, 'error');
+                    return; // Skip this file
+                }
+                const fileId = `file-${fileIdCounter++}`;
+                const fileObject = {
+                    id: fileId,
+                    file: file,
+                    status: 'pending', // pending, uploading, transcribing, completed, error
+                    progress: 0,
+                    transcribedText: null
+                };
+                filesToProcess.push(fileObject);
+                addFileToUI(fileObject);
+                validFilesAdded = true;
+            });
+            if (validFilesAdded) startAllButton.disabled = false;
+        }
+
+        function addFileToUI(fileObject) {
+            const item = document.createElement('div');
+            item.className = 'file-item';
+            item.id = fileObject.id;
+            item.onclick = () => selectFileForView(fileObject.id);
+
+            item.innerHTML = `
+                <div class="file-item-header">
+                    <span class="file-name" title="${fileObject.file.name}">${fileObject.file.name}</span>
+                    <span class="file-size">${(fileObject.file.size / 1024 / 1024).toFixed(2)} MB</span>
+                </div>
+                <div class="file-status" id="status-${fileObject.id}">待处理</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progress-${fileObject.id}" style="width: 0%;"></div>
+                </div>
+            `;
+            fileListContainer.appendChild(item);
+        }
+
+        function updateFileUI(fileId, status, progress, message = null) {
+            const fileObj = filesToProcess.find(f => f.id === fileId);
+            if (!fileObj) return;
+
+            fileObj.status = status;
+            fileObj.progress = progress;
+
+            const fileItemElement = document.getElementById(fileId);
+            const statusElement = document.getElementById(`status-${fileId}`);
+            const progressElement = document.getElementById(`progress-${fileId}`);
+
+            if (fileItemElement) fileItemElement.className = `file-item ${status}`; // for completed/error styling
+
+            if (statusElement) {
+                statusElement.textContent = message || getStatusMessage(status);
+                statusElement.className = `file-status ${status}`;
+            }
+            if (progressElement) progressElement.style.width = `${progress}%`;
+
+            // If this file is currently selected for view, update its display
+            if (selectedFileId === fileId) {
+                displayTranscriptionForSelectedFile();
+            }
+        }
+
+        function getStatusMessage(status) {
+            switch (status) {
+                case 'pending': return '待处理';
+                case 'uploading': return '上传中...';
+                case 'transcribing': return '转录中...';
+                case 'completed': return '已完成';
+                case 'error': return '错误';
+                default: return '未知';
+            }
+        }
+
+        function selectFileForView(fileId) {
+            if (selectedFileId) {
+                document.getElementById(selectedFileId)?.classList.remove('active');
+            }
+            selectedFileId = fileId;
+            document.getElementById(fileId)?.classList.add('active');
+            displayTranscriptionForSelectedFile();
+        }
+
+        function displayTranscriptionForSelectedFile() {
+            const file = filesToProcess.find(f => f.id === selectedFileId);
+            if (file) {
+                transcriptionFileNameDisplay.textContent = file.file.name;
+                if (file.status === 'completed' && file.transcribedText) {
+                    const template = outputTemplateSelect.value;
+                    transcriptionOutput.value = formatText(file.transcribedText, template, file.file.name); // Apply template
+                    copyButton.disabled = false;
+                    downloadTxtButton.disabled = false;
+                    downloadDocxButton.disabled = false; // Enable, actual functionality needs library
+                    downloadPdfButton.disabled = false;  // Enable, actual functionality needs library
+                } else if (file.status === 'error') {
+                    transcriptionOutput.value = `处理文件 "${file.file.name}" 时发生错误。`;
+                    disableOutputActions();
+                } else {
+                    transcriptionOutput.value = `文件 "${file.file.name}" 尚未处理完成或无转录文本。`;
+                    disableOutputActions();
+                }
+            } else {
+                transcriptionFileNameDisplay.textContent = '未选择文件';
+                transcriptionOutput.value = '';
+                disableOutputActions();
+            }
+        }
+        outputTemplateSelect.onchange = displayTranscriptionForSelectedFile; // Re-format on template change
+
+        function disableOutputActions() {
+            copyButton.disabled = true;
+            downloadTxtButton.disabled = true;
+            downloadDocxButton.disabled = true;
+            downloadPdfButton.disabled = true;
+        }
+
+
+        function startAllTranscriptions() {
+            startAllButton.disabled = true;
+            const filesToProcessNow = filesToProcess.filter(f => f.status === 'pending');
+            if (filesToProcessNow.length === 0) {
+                showGlobalStatus('没有待处理的文件。', 'info');
+                startAllButton.disabled = filesToProcess.every(f => f.status !== 'pending'); // Re-enable if some failed and were reset
+                return;
+            }
+
+            showGlobalStatus(`开始处理 ${filesToProcessNow.length} 个文件...`, 'info', true);
+
+            filesToProcessNow.forEach((fileObj, index) => {
+                // Stagger API calls slightly if needed, or use a queue
+                setTimeout(() => processFile(fileObj.id), index * 200); // Small delay for demo
+            });
+        }
+
+        async function processFile(fileId) {
+            const fileObj = filesToProcess.find(f => f.id === fileId);
+            if (!fileObj || fileObj.status !== 'pending') return;
+
+            // 1. Simulate Upload
+            updateFileUI(fileId, 'uploading', 0);
+            for (let p = 0; p <= 100; p += 20) {
+                await new Promise(resolve => setTimeout(resolve, 150)); // Simulate network delay
+                updateFileUI(fileId, 'uploading', p);
+            }
+
+            // 2. Simulate Transcription
+            updateFileUI(fileId, 'transcribing', 0, '转录中...');
+            for (let p = 0; p <= 100; p += 10) {
+                await new Promise(resolve => setTimeout(resolve, 250)); // Simulate processing time
+                updateFileUI(fileId, 'transcribing', p, '转录中...');
+            }
+
+            // Simulate API response
+            // In a real scenario, this is where you'd make your API call
+            // For demo, 10% chance of error
+            if (Math.random() < 0.1) {
+                fileObj.transcribedText = null;
+                updateFileUI(fileId, 'error', 100, '转录失败');
+            } else {
+                const template = 'default'; // API usually returns raw text
+                fileObj.transcribedText = generateMockRawTextForApi(fileObj.file.name);
+                updateFileUI(fileId, 'completed', 100);
+            }
+
+
+            // Check if all files are done
+            if (filesToProcess.every(f => f.status === 'completed' || f.status === 'error')) {
+                showGlobalStatus('所有文件处理完毕。', 'success');
+                startAllButton.disabled = filesToProcess.every(f => f.status !== 'pending');
+            }
+        }
+
+        function generateMockRawTextForApi(fileName) {
+            // This text is "raw" as if from an API, before template application
+            let text = `原始转录文本来自: ${fileName}.\n`;
+            text += "第一句话内容。\n第二句话内容，其中包含一些信息。\n\n";
+            text += "[00:00:01] SPEAKER_A: 你好。\n";
+            text += "[00:00:03] SPEAKER_B: 嗨，你好吗？\n";
+            return text;
+        }
+
+        function formatText(rawText, template, fileName) {
+            if (!rawText) return "无可用文本。";
+            let formattedText = `文件: ${fileName}\n模板: ${template}\n--------------------\n`;
+
+            switch (template) {
+                case 'timestamped':
+                    // Simple example: keep lines with potential timestamps
+                    formattedText += rawText.split('\n').filter(line => line.includes('[') || !line.match(/SPEAKER_[A-Z]:/)).join('\n');
+                    break;
+                case 'speaker_dialogue':
+                    // Simple example: keep lines with speaker tags
+                    formattedText += rawText.split('\n').filter(line => line.includes('SPEAKER_')).join('\n');
+                    break;
+                case 'default':
+                default:
+                     // Simple example: remove obvious speaker/timestamp tags for pure text
+                    formattedText += rawText.split('\n')
+                        .map(line => line.replace(/\[\d{2}:\d{2}:\d{2}\]\s*/g, '').replace(/SPEAKER_[A-Z]:\s*/g, ''))
+                        .filter(line => line.trim() !== '')
+                        .join('\n');
+                    break;
+            }
+            return formattedText;
+        }
+
+
+        function copyToClipboard() {
+            if (transcriptionOutput.value) {
+                transcriptionOutput.select();
+                document.execCommand('copy');
+                showGlobalStatus('当前文本已复制到剪贴板！', 'success');
+            }
+        }
+
+        function downloadText(format) {
+            const file = filesToProcess.find(f => f.id === selectedFileId);
+            if (!file || !file.transcribedText) {
+                showGlobalStatus('没有可下载的文本。', 'error');
+                return;
+            }
+
+            const template = outputTemplateSelect.value;
+            const textToDownload = formatText(file.transcribedText, template, file.file.name);
+            const filename = `${file.file.name.split('.')[0]}_${template}.${format}`;
+
+            if (format === 'txt') {
+                const blob = new Blob([textToDownload], { type: 'text/plain;charset=utf-8' });
+                saveAs(blob, filename);
+            } else if (format === 'docx') {
+                // Needs a library like docx.js or similar server-side generation
+                showGlobalStatus('DOCX导出需要特定库或服务器端支持。此为占位符。', 'info');
+                // Example placeholder using a library (conceptual)
+                // const doc = new docx.Document();
+                // doc.addSection({ properties: {}, children: [new docx.Paragraph(textToDownload)] });
+                // docx.Packer.toBlob(doc).then(blob => saveAs(blob, filename));
+                alert(`模拟下载DOCX: ${filename}\n内容:\n${textToDownload.substring(0,100)}...`);
+
+            } else if (format === 'pdf') {
+                // Needs a library like jsPDF or similar server-side generation
+                showGlobalStatus('PDF导出需要特定库或服务器端支持。此为占位符。', 'info');
+                // Example placeholder using a library (conceptual)
+                // const pdf = new jsPDF();
+                // pdf.text(textToDownload, 10, 10);
+                // pdf.save(filename);
+                alert(`模拟下载PDF: ${filename}\n内容:\n${textToDownload.substring(0,100)}...`);
+            }
+        }
+
+        // Helper for saveAs - typically from FileSaver.js, but basic version here
+        function saveAs(blob, filename) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+        }
+
+        function showGlobalStatus(message, type, autoHide = false) {
+            globalStatusMessage.textContent = message;
+            globalStatusMessage.className = `status-global ${type}`;
+            globalStatusMessage.classList.remove('hidden');
+            if (autoHide) {
+                setTimeout(() => {
+                    globalStatusMessage.classList.add('hidden');
+                }, 3000);
+            }
+        }
+
+    </script>
+</body>
+</html>

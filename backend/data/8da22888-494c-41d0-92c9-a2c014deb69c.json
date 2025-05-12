@@ -1,0 +1,13 @@
+{
+  "fileId": "8da22888-494c-41d0-92c9-a2c014deb69c",
+  "originalName": "test_audio.mp3",
+  "filename": "8da22888-494c-41d0-92c9-a2c014deb69c.mp3",
+  "path": "/Users/qiubin/Documents/GitHub/03on/AIsound/backend/uploads/8da22888-494c-41d0-92c9-a2c014deb69c.mp3",
+  "size": 26,
+  "mimeType": "audio/mpeg",
+  "status": "completed",
+  "createdAt": "2025-05-12T04:16:30.525Z",
+  "updatedAt": "2025-05-12T04:16:30.581Z",
+  "transcription": "这是文件 test_audio.mp3 的模拟转录结果。实际使用时，这里将是真实的语音识别结果。",
+  "completedAt": "2025-05-12T04:16:31.913Z"
+}
